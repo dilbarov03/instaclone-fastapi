@@ -13,7 +13,7 @@ import string
 import shutil
 import cloudinary
 import cloudinary.uploader
-
+from fastapi_pagination import Page, paginate
 
 router = APIRouter(
    prefix = '/post',
@@ -22,9 +22,9 @@ router = APIRouter(
 
 image_url_types = ['absolute', 'relative']
 
-@router.get('/all', response_model=List[PostDisplay])
+@router.get('/all', response_model=Page[PostDisplay])
 def get_all(db: Session = Depends(get_db)):
-   return db_post.get_all(db)
+   return paginate(db_post.get_all(db))
 
 @router.get('/some', response_model=List[PostDisplay])
 def get_some(num: int, db: Session = Depends(get_db)):

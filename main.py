@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi_pagination import add_pagination
 from sqlalchemy.sql.functions import mode
 from db import models
 from db.database import engine
@@ -33,5 +34,4 @@ app.add_middleware(
 
 models.Base.metadata.create_all(engine)
 
-"""app.mount('/images', StaticFiles(directory='images'), name='images')
-app.mount('/profile', StaticFiles(directory='profile'), name='profile')"""
+add_pagination(app)
