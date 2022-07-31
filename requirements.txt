@@ -9,3 +9,4 @@ aiofiles
 python-jose
 psycopg2-binary
 cloudinary
+fastapi-pagination
