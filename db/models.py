@@ -1,7 +1,11 @@
 from sqlalchemy.sql.schema import ForeignKey
 from .database import Base
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import ARRAY, Column, Integer, String, DateTime
 from sqlalchemy.orm import relationship
+
+from sqlalchemy.ext.mutable import Mutable
+from sqlalchemy.ext.mutable import MutableList
+
 
 class DbUser(Base):
    __tablename__ = "users"
@@ -26,6 +30,7 @@ class DbPost(Base):
    timestamp = Column(DateTime)
    user_id = Column(Integer, ForeignKey('users.id'))
    likes = Column(Integer, default=0)
+   liked_users = Column(MutableList.as_mutable(ARRAY(Integer)))
    user = relationship('DbUser', back_populates='items')
    comments = relationship('DbComment', back_populates='post')
 
@@ -46,3 +51,9 @@ class DbFollow(Base):
    user_id = Column(Integer, ForeignKey("users.id"))
    subscribed = Column(Integer)
    user = relationship('DbUser', back_populates='items3')
+
+class PostLikes(Base):
+   __tablename__ = "PostLikes"
+   id = Column(Integer, primary_key=True, index=True)
+   user_id = Column(Integer)
+   post_id = Column(Integer)

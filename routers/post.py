@@ -51,8 +51,8 @@ def upload_image(file: UploadFile = File(...), current_user: UserAuth = Depends(
    return {'path': url}
 
 @router.post('/{id}/like', response_model=PostDisplay)
-def like(id: int, status: bool, db: Session = Depends(get_db), current_user: UserAuth = Depends(get_current_user)):
-   return db_post.like_post(id, status, db, current_user)
+def like(id: int, db: Session = Depends(get_db), current_user: UserAuth = Depends(get_current_user)):
+   return db_post.like_post(id, db, current_user)
 
 
 @router.delete('/delete/{id}')

@@ -1,8 +1,9 @@
 from fastapi import HTTPException, status
 from routers.schemas import PostBase, UserAuth
 from sqlalchemy.orm.session import Session
-from db.models import DbPost
+from db.models import DbPost, PostLikes
 import datetime
+from sqlalchemy import text
 
 def create(db: Session, request: PostBase, current_user: UserAuth):
    new_post = DbPost(
@@ -52,14 +53,31 @@ def delete(db: Session, id: int, user_id: int):
    db.commit()
    return 'Post deleted successfully!'
 
-def like_post(id: int, status: bool, db: Session, current_user: UserAuth):
+def like_post(id: int, db: Session, current_user: UserAuth):
    post = db.query(DbPost).filter(DbPost.id == id).first()
    if not post:
       raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Post with id {id} not found")
-   if status==True:
-      post.likes+=1
+   
+   if current_user.id in post.liked_users:
+      post.likes-=1
+      post.liked_users.remove(current_user.id)
       db.commit()
    else:
-      post.likes-=1   
+      post.likes+=1 
+      post.liked_users.append(current_user.id)
       db.commit()
+
+   """liked_user = db.query(PostLikes).filter(PostLikes.post_id==post.id, PostLikes.user_id==current_user.id).first()
+   if liked_user:
+      post.likes -= 1
+      db.delete(liked_user)
+      db.commit()
+   else:
+      post.likes += 1
+      new_like = PostLikes(post_id=post.id, user_id=current_user.id)
+      db.add(new_like)
+      db.commit()
+      db.refresh(new_like)"""
+
+
    return post
