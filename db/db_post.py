@@ -41,6 +41,8 @@ def change_post(request: PostBase, id:int, db: Session, current_user: UserAuth )
    if request.caption:
       post.caption=request.caption
 
+   db.commit(post)
+
    return post
 
 def delete(db: Session, id: int, user_id: int):

@@ -38,9 +38,7 @@ class AllUsers(BaseModel):
 
 class PostBase(BaseModel):
    image_url: str
-   #image_url_type: str
    caption: str
-   #creator_id: int
 
 #For PostDisplay:
 class User(BaseModel):
