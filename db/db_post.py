@@ -1,5 +1,5 @@
 from fastapi import HTTPException, status
-from routers.schemas import PostBase, UserAuth
+from routers.schemas import PostBase, UpdatePostBase, UserAuth
 from sqlalchemy.orm.session import Session
 from db.models import DbPost, PostLikes
 import datetime
@@ -30,7 +30,7 @@ def get_id(db: Session, id: int):
       raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Post with id {id} not found")
    return post   
 
-def change_post(request: PostBase, id:int, db: Session, current_user: UserAuth ):
+def change_post(request: UpdatePostBase, id:int, db: Session, current_user: UserAuth ):
    post = db.query(DbPost).filter(DbPost.id == id).first()
    if not post:
       raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Post with id {id} not found")

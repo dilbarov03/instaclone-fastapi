@@ -41,8 +41,8 @@ class PostBase(BaseModel):
    caption: str
 
 class UpdatePostBase(BaseModel):
-   image_url: Optional(str)
-   caption: Optional(str)
+   image_url: Optional[str]
+   caption: Optional[str]
 
 #For PostDisplay:
 class User(BaseModel):

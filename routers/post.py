@@ -3,7 +3,7 @@ from fastapi.exceptions import HTTPException
 from sqlalchemy.orm.session import Session
 from fastapi.responses import StreamingResponse
 from auth.oauth2 import get_current_user
-from .schemas import PostBase, PostDisplay
+from .schemas import PostBase, PostDisplay, UpdatePostBase
 from db.database import get_db
 from db import db_post
 from typing import List
@@ -35,7 +35,7 @@ def get_post_by_id(id: int, db: Session = Depends(get_db)):
    return db_post.get_id(db, id)
 
 @router.patch('/{id}', response_model=PostDisplay)
-def update_post(request: PostBase,id: int, db: Session = Depends(get_db), current_user: UserAuth = Depends(get_current_user)):
+def update_post(request: UpdatePostBase,id: int, db: Session = Depends(get_db), current_user: UserAuth = Depends(get_current_user)):
    return db_post.change_post(request, id, db, current_user)
 
 
