@@ -40,6 +40,10 @@ class PostBase(BaseModel):
    image_url: str
    caption: str
 
+class UpdatePostBase(BaseModel):
+   image_url: Optional(str)
+   caption: Optional(str)
+
 #For PostDisplay:
 class User(BaseModel):
    username: str

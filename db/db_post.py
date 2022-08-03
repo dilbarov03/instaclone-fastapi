@@ -41,7 +41,7 @@ def change_post(request: PostBase, id:int, db: Session, current_user: UserAuth )
    if request.caption:
       post.caption=request.caption 
 
-   db.commit(post)
+   db.commit()
 
    return post
 
