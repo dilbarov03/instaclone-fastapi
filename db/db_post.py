@@ -34,12 +34,12 @@ def change_post(request: PostBase, id:int, db: Session, current_user: UserAuth )
    post = db.query(DbPost).filter(DbPost.id == id).first()
    if not post:
       raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Post with id {id} not found")
-   #if request.creator_id!=current_user.id:
-      #raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"You can post only by your account")
+   if request.creator_id!=current_user.id:
+      raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"You can post only by your account")
    if request.image_url:
       post.image_url=request.image_url
    if request.caption:
-      post.caption=request.caption
+      post.caption=request.caption 
 
    db.commit(post)
 
