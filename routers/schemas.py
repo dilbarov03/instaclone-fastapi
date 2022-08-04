@@ -67,7 +67,7 @@ class PostDisplay(BaseModel):
    timestamp: datetime
    likes: int
    user: User
-   liked_users: List[int]
+   liked_users: List[]
    comments: List[CommentDisplay]
    class Config():
       orm_mode = True
