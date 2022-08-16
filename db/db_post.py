@@ -60,13 +60,18 @@ def like_post(id: int, db: Session, current_user: UserAuth):
    if not post:
       raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Post with id {id} not found")
    
-   if (post.liked_users is not None) and (current_user.id in post.liked_users):
+   if post.liked_users is  None:
+      post.likes+=1 
+      post.liked_users = [current_user.id, ]
+      db.commit()
+
+   elif current_user.id in post.liked_users:
       post.likes-=1
       post.liked_users.remove(current_user.id)
       db.commit()
    else:
       post.likes+=1 
-      post.liked_users = [current_user.id, ]
+      post.liked_users.append(current_user.id)
       db.commit()
 
    """liked_user = db.query(PostLikes).filter(PostLikes.post_id==post.id, PostLikes.user_id==current_user.id).first()
