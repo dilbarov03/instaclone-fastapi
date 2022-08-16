@@ -3,6 +3,8 @@ from sqlalchemy.orm.session import Session
 from routers.schemas import CommentBase, UserAuth
 from db.models import DbComment, DbUser
 from datetime import datetime
+from sqlalchemy import desc
+
 
 def create(db: Session, request: CommentBase, current_user: UserAuth):
    new_comment = DbComment(
@@ -28,7 +30,7 @@ def create(db: Session, request: CommentBase, current_user: UserAuth):
    #return new_comment
 
 def get_all(db: Session, post_id: int):
-   return db.query(DbComment).filter(DbComment.post_id == post_id).all()
+   return db.query(DbComment).filter(DbComment.post_id == post_id).order_by(desc(DbComment.id)).all()
 
 def update(id: int, db: Session, request: CommentBase, current_user: UserAuth):
    comment = db.query(DbComment).filter(DbComment.id==id).first()
