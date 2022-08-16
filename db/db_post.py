@@ -60,7 +60,7 @@ def like_post(id: int, db: Session, current_user: UserAuth):
    if not post:
       raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Post with id {id} not found")
    
-   if current_user.id in post.liked_users:
+   if (post.liked_users is not None) and (current_user.id in post.liked_users):
       post.likes-=1
       post.liked_users.remove(current_user.id)
       db.commit()
