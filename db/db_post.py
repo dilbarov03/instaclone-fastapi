@@ -1,6 +1,7 @@
 from fastapi import HTTPException, status
 from routers.schemas import PostBase, UpdatePostBase, UserAuth
 from sqlalchemy.orm.session import Session
+from sqlalchemy import desc
 from db.models import DbPost, PostLikes
 import datetime
 from sqlalchemy import text
@@ -19,7 +20,7 @@ def create(db: Session, request: PostBase, current_user: UserAuth):
    return new_post
 
 def get_all(db: Session):
-   return db.query(DbPost).all()
+   return db.query(DbPost).order_by(desc(DbPost.time)).all()
 
 def get_some(num: int, db: Session):
    return db.query(DbPost).order_by(DbPost.id.desc()).limit(num).all()
