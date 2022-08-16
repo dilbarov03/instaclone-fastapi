@@ -20,7 +20,7 @@ def create(db: Session, request: PostBase, current_user: UserAuth):
    return new_post
 
 def get_all(db: Session):
-   return db.query(DbPost).order_by(desc(DbPost.time)).all()
+   return db.query(DbPost).order_by(desc(DbPost.id)).all()
 
 def get_some(num: int, db: Session):
    return db.query(DbPost).order_by(DbPost.id.desc()).limit(num).all()
