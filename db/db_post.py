@@ -66,7 +66,7 @@ def like_post(id: int, db: Session, current_user: UserAuth):
       db.commit()
    else:
       post.likes+=1 
-      post.liked_users.append(current_user.id)
+      post.liked_users = [current_user.id, ]
       db.commit()
 
    """liked_user = db.query(PostLikes).filter(PostLikes.post_id==post.id, PostLikes.user_id==current_user.id).first()
