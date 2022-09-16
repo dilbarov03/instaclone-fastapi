@@ -45,6 +45,8 @@ def delete(id: int, db: Session, current_user: UserAuth):
    comment = db.query(DbComment).filter(DbComment.id==id).first()
    if not comment:
       raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Comment with id {id} not found")
+   if comment.user_id!=current_user.id or current_user.is_admin == False:
+      raise HTTPException(status_code=403, detail="You have no permission for that")
    db.delete(comment)
    db.commit()
    return "Comment deleted successfully!"

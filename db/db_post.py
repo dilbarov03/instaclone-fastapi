@@ -2,7 +2,7 @@ from fastapi import HTTPException, status
 from routers.schemas import PostBase, UpdatePostBase, UserAuth
 from sqlalchemy.orm.session import Session
 from sqlalchemy import desc
-from db.models import DbPost, PostLikes
+from db.models import DbPost, DbUser, PostLikes
 import datetime
 from sqlalchemy import text
 
@@ -50,7 +50,8 @@ def delete(db: Session, id: int, user_id: int):
    post = db.query(DbPost).filter(DbPost.id == id).first()
    if not post:
       raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Post with id {id} not found")
-   if post.user_id != user_id:
+   user = db.query(DbUser).filter(DbUser.id==user_id).first()
+   if post.user_id != user_id or user.is_admin == False:
       raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Only post author can delete it!")
    db.delete(post)
    db.commit()

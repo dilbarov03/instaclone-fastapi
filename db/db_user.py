@@ -104,26 +104,26 @@ def my_subscriptions(db: Session, current_user: UserAuth):
 
 def delete_account(db: Session, current_user: UserAuth):
    user = db.query(DbUser).filter(DbUser.id==current_user.id).first()
-   comments = db.query(DbComment).filter(DbComment.user_id==user.id).all()
-   if comments:
-      for i in comments:
-         db.delete(i)
-         db.commit()
+   # comments = db.query(DbComment).filter(DbComment.user_id==user.id).all()
+   # if comments:
+   #    for i in comments:
+   #       db.delete(i)
+   #       db.commit()
 
-   posts = db.query(DbPost).filter(DbPost.user_id==user.id).all()
-   if posts:
-      for i in posts:
-         db.delete(i)
-         db.commit()
+   # posts = db.query(DbPost).filter(DbPost.user_id==user.id).all()
+   # if posts:
+   #    for i in posts:
+   #       db.delete(i)
+   #       db.commit()
    
-   subscriptions = db.query(DbFollow).filter(DbFollow.user_id==user.id).all()
-   if subscriptions:
-      for i in subscriptions:
-         subscribed_user = db.query(DbUser).filter(DbUser.id==i.subscribed).first()
-         subscribed_user.subscribers-=1
-         db.commit()
-         db.delete(i)
-         db.commit()
+   # subscriptions = db.query(DbFollow).filter(DbFollow.user_id==user.id).all()
+   # if subscriptions:
+   #    for i in subscriptions:
+   #       subscribed_user = db.query(DbUser).filter(DbUser.id==i.subscribed).first()
+   #       subscribed_user.subscribers-=1
+   #       db.commit()
+   #       db.delete(i)
+   #       db.commit()
 
    followed = db.query(DbFollow).filter(DbFollow.subscribed==user.id).all()
    if followed:
