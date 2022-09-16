@@ -51,7 +51,7 @@ def delete(db: Session, id: int, user_id: int):
    if not post:
       raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Post with id {id} not found")
    user = db.query(DbUser).filter(DbUser.id==user_id).first()
-   if post.user_id != user_id or user.is_admin == False:
+   if post.user_id != user_id and user.is_admin == False:
       raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Only post author can delete it!")
    db.delete(post)
    db.commit()
