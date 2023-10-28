@@ -11,3 +11,4 @@ psycopg2-binary
 cloudinary
 fastapi-pagination
 sqlalchemy-migrate
+pydantic==1.10.4
